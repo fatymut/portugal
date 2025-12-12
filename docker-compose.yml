@@ -1,0 +1,10 @@
+#docker-compose.yml
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: familytree
+    ports:
+      - "27017:27017"
+
+    restart: always
