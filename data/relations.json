@@ -4,10 +4,9 @@
     "type": "couple",
     "personne1": "ind_001",
     "personne2": "ind_002",
-    "date_debut": "1960",
-    "date_fin": null,
-    "commentaire": "Mariage traditionnel a Lisbonne",
-    "date_divorce": null
+    "date_mariage": "1950-06-15",
+    "date_divorce": null,
+    "commentaire": "Mariage traditionnel"
   },
   {
     "_id": "rel_002",
@@ -28,10 +27,9 @@
     "type": "couple",
     "personne1": "ind_003",
     "personne2": "ind_004",
-    "date_debut": "1988",
-    "date_fin": null,
-    "commentaire": "Mariage civil a Lisbonne",
-    "date_divorce": null
+    "date_mariage": "1978-05-20",
+    "date_divorce": null,
+    "commentaire": "Mariage civil"
   },
   {
     "_id": "rel_005",
@@ -59,6 +57,66 @@
     "type": "parent_enfant",
     "parent": "ind_004",
     "enfant": "ind_006",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_009",
+    "type": "couple",
+    "personne1": "ind_005",
+    "personne2": "ind_010",
+    "date_mariage": "2010-09-12",
+    "date_divorce": null,
+    "commentaire": "Mariage récent"
+  },
+  {
+    "_id": "rel_010",
+    "type": "parent_enfant",
+    "parent": "ind_005",
+    "enfant": "ind_007",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_011",
+    "type": "parent_enfant",
+    "parent": "ind_010",
+    "enfant": "ind_007",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_012",
+    "type": "parent_enfant",
+    "parent": "ind_005",
+    "enfant": "ind_008",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_013",
+    "type": "parent_enfant",
+    "parent": "ind_010",
+    "enfant": "ind_008",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_014",
+    "type": "couple",
+    "personne1": "ind_009",
+    "personne2": "ind_006",
+    "date_mariage": "2012-07-30",
+    "date_divorce": null,
+    "commentaire": "Remariage"
+  },
+  {
+    "_id": "rel_015",
+    "type": "parent_enfant",
+    "parent": "ind_009",
+    "enfant": "ind_011",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_016",
+    "type": "parent_enfant",
+    "parent": "ind_006",
+    "enfant": "ind_011",
     "nature": "biologique"
   }
 ]

@@ -18,13 +18,18 @@ foreach ($individuals as $p) {
 $couples = [];
 foreach ($relations as $r) {
     if ($r['type'] === 'couple') {
+        $statut = 'marie';
+        if (isset($r['statut'])) {
+            $statut = $r['statut'];
+        }
+
         $couples[$r['personne1']] = [
             'spouse' => $r['personne2'],
-            'statut' => $r['statut'] ?? 'marie'
+            'statut' => $statut
         ];
         $couples[$r['personne2']] = [
             'spouse' => $r['personne1'],
-            'statut' => $r['statut'] ?? 'marie'
+            'statut' => $statut
         ];
     }
 }
@@ -47,8 +52,6 @@ foreach ($people as $id => $p) {
     }
 }
 
-$rendered = [];
-
 /* =========================
    AFFICHAGE RÉCURSIF
    ========================= */
@@ -69,61 +72,91 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 
     echo "<div class='flex flex-col items-center'>";
 
-    /* =========================
-       AFFICHAGE COUPLE
-       ========================= */
+    // AFFICHAGE COUPLE
     if ($spouse !== null && !isset($rendered[$spouse])) {
         $rendered[$spouse] = true;
         $s = $people[$spouse];
 
+        $style = "bg-gray-100 border-gray-400";
+        $icon = "💔";
+        $label = "Divorcés";
         if ($statut === 'marie') {
             $style = "bg-yellow-50 border-yellow-400";
             $icon = "💍";
             $label = "Mariés";
-        } else {
-            $style = "bg-gray-100 border-gray-400";
-            $icon = "💔";
-            $label = "Divorcés";
         }
 
         echo "<div class='flex gap-6 items-center mb-4'>";
+        
         foreach ([$p, $s] as $person) {
-            echo "<div class='$style border-2 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px]'>
-                    <p class='font-bold text-lg'>{$person['prenom']} {$person['nom']}</p>
-                    <p class='text-sm text-gray-600'>{$person['date_naissance']}</p>";
+            echo "<div class='$style border-2 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px]'>";
+            
+            // Nom/prénom cliquable
+            echo "<p class='font-bold text-lg'>";
+            echo "<a href='individual.php?id=" . $person['_id'] . "' class='text-blue-600 hover:underline'>";
+            echo $person['prenom'] . " " . $person['nom'];
+            echo "</a>";
+            echo "</p>";
+
+            echo "<p class='text-sm text-gray-600'>Date naissance: " . $person['date_naissance'] . "</p>";
 
             if (!empty($person['date_deces'])) {
-                echo "<p class='text-sm text-red-600'>⚰ {$person['date_deces']}</p>";
+                echo "<p class='text-sm text-red-600'>⚰ Date décès: " . $person['date_deces'] . "</p>";
+            }
+
+            if (!empty($person['profession'])) {
+                $professions = (array)$person['profession'];
+                echo "<p class='text-sm text-gray-700'>Profession: " . implode(', ', $professions) . "</p>";
+            }
+
+            if (!empty($person['lieu_naissance'])) {
+                echo "<p class='text-sm text-gray-700'>Lieu naissance: " . $person['lieu_naissance'] . "</p>";
+            }
+
+            if (!empty($person['nationalite'])) {
+                echo "<p class='text-sm text-gray-700'>Nationalité: " . $person['nationalite'] . "</p>";
             }
 
             echo "</div>";
         }
-
-        echo "<span class='font-bold text-lg mx-2'>$icon</span>";
         echo "</div>";
-        echo "<p class='text-sm text-gray-600 mb-2'>$label</p>";
+        echo "<p class='text-sm text-gray-600 mb-2'>$label $icon</p>";
     }
 
-    /* =========================
-       PERSONNE SEULE
-       ========================= */
+    // PERSONNE SEULE
     if ($spouse === null) {
-        echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] mb-4'>
-                <p class='font-bold text-lg'>{$p['prenom']} {$p['nom']}</p>
-                <p class='text-sm text-gray-600'>{$p['date_naissance']}</p>";
+        echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] mb-4'>";
+        
+        echo "<p class='font-bold text-lg'>";
+        echo "<a href='individual.php?id=" . $p['_id'] . "' class='text-blue-600 hover:underline'>";
+        echo $p['prenom'] . " " . $p['nom'];
+        echo "</a>";
+        echo "</p>";
+
+        echo "<p class='text-sm text-gray-600'>Date naissance: " . $p['date_naissance'] . "</p>";
 
         if (!empty($p['date_deces'])) {
-            echo "<p class='text-sm text-red-600'>⚰ {$p['date_deces']}</p>";
+            echo "<p class='text-sm text-red-600'>⚰ Date décès: " . $p['date_deces'] . "</p>";
+        }
+
+        if (!empty($p['profession'])) {
+            $professions = (array)$p['profession'];
+            echo "<p class='text-sm text-gray-700'>Profession: " . implode(', ', $professions) . "</p>";
+        }
+
+        if (!empty($p['lieu_naissance'])) {
+            echo "<p class='text-sm text-gray-700'>Lieu naissance: " . $p['lieu_naissance'] . "</p>";
+        }
+
+        if (!empty($p['nationalite'])) {
+            echo "<p class='text-sm text-gray-700'>Nationalité: " . $p['nationalite'] . "</p>";
         }
 
         echo "</div>";
     }
 
-    /* =========================
-       ENFANTS (FRÈRES / SŒURS)
-       ========================= */
+    // ENFANTS
     $children = [];
-
     if ($spouse !== null) {
         if (isset($tree[$id])) {
             foreach ($tree[$id] as $c) {
@@ -164,10 +197,10 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 <body class="bg-gray-100">
 
 <h1 class="text-4xl font-bold text-center py-6 bg-white shadow">
-    🌳 Arbre généalogique
+    Arbre généalogique
 </h1>
 
-<div class="mt-6 ">
+<div class="mt-6">
     <a href="../index.php" class="text-blue-600 hover:underline">← Retour à l’accueil</a>
 </div>
 

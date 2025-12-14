@@ -13,6 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'nom' => $_POST['nom'],
         'date_naissance' => $_POST['date_naissance'],
         'sexe' => $_POST['sexe'],
+        'lieu_naissance' => $_POST['lieu_naissance'] ?: null,
+        'nationalite' => $_POST['nationalite'] ?: null,
+        'profession' => $_POST['profession'] ?: null,
         'date_deces' => $_POST['date_deces'] ?: null
     ];
 
@@ -31,10 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Nouvelle personne</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<form action="src/search.php" method="get">
-        <input type="text" name="q" placeholder="Nom ou prénom">
-        <button type="submit">Rechercher</button>
-    </form>
+       
 <body class="bg-gray-100 min-h-screen p-6">
 <div class="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-8">
 
@@ -60,6 +60,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div>
         <label class="block text-sm font-medium">Date de décès</label>
         <input class="w-full border rounded-lg p-2" type="date" name="date_deces">
+    </div>
+
+        <div>
+        <label class="block text-sm font-medium">Profession</label>
+        <input class="w-full border rounded-lg p-2" type="text" name="profession">
+    </div>
+            <div>
+        <label class="block text-sm font-medium">Lieu de naissance</label>
+        <input class="w-full border rounded-lg p-2" type="text" name="lieu_naissance">
+    </div>
+                <div>
+        <label class="block text-sm font-medium">Nationalité</label>
+        <input class="w-full border rounded-lg p-2" type="text" name="nationalite">
     </div>
 
     <div>
