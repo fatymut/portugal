@@ -1,0 +1,64 @@
+[
+  {
+    "_id": "rel_001",
+    "type": "couple",
+    "personne1": "ind_001",
+    "personne2": "ind_002",
+    "date_debut": "1960",
+    "date_fin": null,
+    "commentaire": "Mariage traditionnel a Lisbonne",
+    "date_divorce": null
+  },
+  {
+    "_id": "rel_002",
+    "type": "parent_enfant",
+    "parent": "ind_001",
+    "enfant": "ind_003",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_003",
+    "type": "parent_enfant",
+    "parent": "ind_002",
+    "enfant": "ind_003",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_004",
+    "type": "couple",
+    "personne1": "ind_003",
+    "personne2": "ind_004",
+    "date_debut": "1988",
+    "date_fin": null,
+    "commentaire": "Mariage civil a Lisbonne",
+    "date_divorce": null
+  },
+  {
+    "_id": "rel_005",
+    "type": "parent_enfant",
+    "parent": "ind_003",
+    "enfant": "ind_005",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_006",
+    "type": "parent_enfant",
+    "parent": "ind_004",
+    "enfant": "ind_005",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_007",
+    "type": "parent_enfant",
+    "parent": "ind_003",
+    "enfant": "ind_006",
+    "nature": "biologique"
+  },
+  {
+    "_id": "rel_008",
+    "type": "parent_enfant",
+    "parent": "ind_004",
+    "enfant": "ind_006",
+    "nature": "biologique"
+  }
+]

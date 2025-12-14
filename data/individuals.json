@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "ind_001",
+    "nom": "Silva",
+    "prenom": "Manuel",
+    "sexe": "M",
+    "date_naissance": "1935-02-14",
+    "lieu_naissance": "Lisbonne",
+    "date_deces": "2001-08-10",
+    "professioniveProfession": ["dockeur"],
+    "nationalite": "Portugaise"
+  },
+  {
+    "_id": "ind_002",
+    "nom": "Silva",
+    "prenom": "Ana",
+    "sexe": "F",
+    "date_naissance": "1938-06-03",
+    "lieu_naissance": "Setubal",
+    "date_deces": "2010-11-22",
+    "profession": ["couturiere"],
+    "nationalite": "Portugaise"
+  },
+  {
+    "_id": "ind_003",
+    "nom": "Silva",
+    "prenom": "Joao",
+    "sexe": "M",
+    "date_naissance": "1965-04-12",
+    "lieu_naissance": "Lisbonne",
+    "date_deces": null,
+    "profession": ["ouvrier"],
+    "nationalite": "Portugaise"
+  },
+  {
+    "_id": "ind_004",
+    "nom": "Silva",
+    "prenom": "Maria",
+    "sexe": "F",
+    "date_naissance": "1967-09-30",
+    "lieu_naissance": "Lisbonne",
+    "date_deces": null,
+    "profession": ["employee municipale"],
+    "nationalite": "Portugaise"
+  },
+  {
+    "_id": "ind_005",
+    "nom": "Silva",
+    "prenom": "Pedro",
+    "sexe": "M",
+    "date_naissance": "1990-01-18",
+    "lieu_naissance": "Lisbonne",
+    "date_deces": null,
+    "profession": ["technicien informatique"],
+    "nationalite": "Portugaise"
+  },
+  {
+    "_id": "ind_006",
+    "nom": "Silva",
+    "prenom": "Ines",
+    "sexe": "F",
+    "date_naissance": "1993-07-25",
+    "lieu_naissance": "Lisbonne",
+    "date_deces": null,
+    "profession": ["etudiante"],
+    "nationalite": "Portugaise"
+  }
+]
