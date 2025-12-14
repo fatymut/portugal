@@ -1,6 +1,3 @@
-Parfait ! Voici un README prêt à copier-coller pour ton projet :
-
-````markdown
 # Projet Généalogie
 
 Une application web de gestion généalogique permettant de créer, modifier et visualiser des individus et leurs relations familiales.  
