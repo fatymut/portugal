@@ -163,7 +163,7 @@ $relations = $id ? $db->relations->find([
 <h1 class="text-3xl font-bold mb-2"><?= $individu['prenom'] ?? 'Nouvel individu' ?> <?= $individu['nom'] ?? '' ?></h1>
 
 <?php if (!empty($individu['date_deces'])): ?>
-<p class="text-red-600 font-semibold mb-4">☠ Décédé(e) le <?= $individu['date_deces'] ?></p>
+<p class="text-red-600 font-semibold mb-4"> Décédé le <?= $individu['date_deces'] ?></p>
 <?php endif; ?>
 
 <h2 class="text-xl font-semibold mb-4">Informations</h2>
