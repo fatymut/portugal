@@ -1,24 +1,35 @@
 <?php
 require '../config/mongo.php';
 
+/* =========================
+   RÉCUPÉRATION DES DONNÉES
+   ========================= */
+
 $individuals = iterator_to_array($db->individuals->find());
 $relations   = iterator_to_array($db->relations->find());
 
+/* Index des personnes */
 $people = [];
 foreach ($individuals as $p) {
     $people[$p['_id']] = $p;
 }
 
-// Couples mariés
+/* Couples (mariés ou divorcés) */
 $couples = [];
 foreach ($relations as $r) {
-    if ($r['type'] === 'couple' && ($r['statut'] ?? 'marie') === 'marie') {
-        $couples[$r['personne1']] = $r['personne2'];
-        $couples[$r['personne2']] = $r['personne1'];
+    if ($r['type'] === 'couple') {
+        $couples[$r['personne1']] = [
+            'spouse' => $r['personne2'],
+            'statut' => $r['statut'] ?? 'marie'
+        ];
+        $couples[$r['personne2']] = [
+            'spouse' => $r['personne1'],
+            'statut' => $r['statut'] ?? 'marie'
+        ];
     }
 }
 
-// Parent -> enfants
+/* Parent -> enfants */
 $tree = [];
 $hasParent = [];
 foreach ($relations as $r) {
@@ -28,7 +39,7 @@ foreach ($relations as $r) {
     }
 }
 
-// Racines = personnes sans parents
+/* Racines */
 $roots = [];
 foreach ($people as $id => $p) {
     if (!isset($hasParent[$id])) {
@@ -38,57 +49,101 @@ foreach ($people as $id => $p) {
 
 $rendered = [];
 
-// =========================
-// AFFICHAGE RÉCURSIF
-// =========================
+/* =========================
+   AFFICHAGE RÉCURSIF
+   ========================= */
 function renderNode($id, $people, $tree, $couples, &$rendered) {
-    if (isset($rendered[$id])) return;
+    if (isset($rendered[$id])) {
+        return;
+    }
     $rendered[$id] = true;
 
     $p = $people[$id];
-    $spouse = $couples[$id] ?? null;
+    $spouse = null;
+    $statut = null;
+
+    if (isset($couples[$id])) {
+        $spouse = $couples[$id]['spouse'];
+        $statut = $couples[$id]['statut'];
+    }
 
     echo "<div class='flex flex-col items-center'>";
 
-    // Affichage couple marié
-    if ($spouse && !isset($rendered[$spouse])) {
+    /* =========================
+       AFFICHAGE COUPLE
+       ========================= */
+    if ($spouse !== null && !isset($rendered[$spouse])) {
         $rendered[$spouse] = true;
         $s = $people[$spouse];
 
+        if ($statut === 'marie') {
+            $style = "bg-yellow-50 border-yellow-400";
+            $icon = "💍";
+            $label = "Mariés";
+        } else {
+            $style = "bg-gray-100 border-gray-400";
+            $icon = "💔";
+            $label = "Divorcés";
+        }
+
         echo "<div class='flex gap-6 items-center mb-4'>";
         foreach ([$p, $s] as $person) {
-            echo "<div class='bg-yellow-50 border-2 border-yellow-400 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] hover:shadow-xl transition'>
+            echo "<div class='$style border-2 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px]'>
                     <p class='font-bold text-lg'>{$person['prenom']} {$person['nom']}</p>
-                    <p class='text-sm text-gray-600'>{$person['date_naissance']}</p>"
-                    .(!empty($person['date_deces'])?"<p class='text-sm text-red-600'>⚰ {$person['date_deces']}</p>":"").
-                  "</div>";
-            if ($person === $p) {
-                echo "<span class='text-yellow-600 text-xl font-bold flex items-center'>💍</span>";
+                    <p class='text-sm text-gray-600'>{$person['date_naissance']}</p>";
+
+            if (!empty($person['date_deces'])) {
+                echo "<p class='text-sm text-red-600'>⚰ {$person['date_deces']}</p>";
             }
+
+            echo "</div>";
         }
+
+        echo "<span class='font-bold text-lg mx-2'>$icon</span>";
         echo "</div>";
-    }
-    // Affichage personne seule
-    elseif (!$spouse || isset($rendered[$spouse])) {
-        echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] hover:shadow-xl transition mb-4'>
-                <p class='font-bold text-lg'>{$p['prenom']} {$p['nom']}</p>
-                <p class='text-sm text-gray-600'>{$p['date_naissance']}</p>"
-                .(!empty($p['date_deces'])?"<p class='text-sm text-red-600'>⚰ {$p['date_deces']}</p>":"").
-              "</div>";
+        echo "<p class='text-sm text-gray-600 mb-2'>$label</p>";
     }
 
-    // Enfants
+    /* =========================
+       PERSONNE SEULE
+       ========================= */
+    if ($spouse === null) {
+        echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] mb-4'>
+                <p class='font-bold text-lg'>{$p['prenom']} {$p['nom']}</p>
+                <p class='text-sm text-gray-600'>{$p['date_naissance']}</p>";
+
+        if (!empty($p['date_deces'])) {
+            echo "<p class='text-sm text-red-600'>⚰ {$p['date_deces']}</p>";
+        }
+
+        echo "</div>";
+    }
+
+    /* =========================
+       ENFANTS (FRÈRES / SŒURS)
+       ========================= */
     $children = [];
-    if ($spouse) {
-        foreach ($tree[$id] ?? [] as $c) $children[] = $c;
-        foreach ($tree[$spouse] ?? [] as $c) $children[] = $c;
+
+    if ($spouse !== null) {
+        if (isset($tree[$id])) {
+            foreach ($tree[$id] as $c) {
+                $children[] = $c;
+            }
+        }
+        if (isset($tree[$spouse])) {
+            foreach ($tree[$spouse] as $c) {
+                $children[] = $c;
+            }
+        }
     } else {
-        $children = $tree[$id] ?? [];
+        if (isset($tree[$id])) {
+            $children = $tree[$id];
+        }
     }
 
     if (!empty($children)) {
         echo "<div class='w-px h-8 bg-gray-400 my-2'></div>";
-        echo "<div class='flex gap-10 bg-white/10 p-2 rounded-md'>"; // fond léger pour enfants/frères-sœurs
+        echo "<div class='flex gap-10 bg-blue-50 p-4 rounded-lg'>";
         foreach ($children as $child) {
             renderNode($child, $people, $tree, $couples, $rendered);
         }
@@ -107,11 +162,16 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-<h1 class="text-4xl font-bold text-center py-6 bg-white shadow">🌳 Arbre généalogique</h1>
-<div class="mt-6">
+
+<h1 class="text-4xl font-bold text-center py-6 bg-white shadow">
+    🌳 Arbre généalogique
+</h1>
+
+<div class="mt-6 ">
     <a href="../index.php" class="text-blue-600 hover:underline">← Retour à l’accueil</a>
 </div>
-<div class="overflow-auto w-screen h-[calc(100vh-96px)] p-10">
+
+<div class="overflow-auto w-screen h-[calc(100vh-120px)] p-10">
     <div class="flex justify-center gap-20 min-w-max">
         <?php
         $rendered = [];
@@ -121,5 +181,6 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
         ?>
     </div>
 </div>
+
 </body>
 </html>

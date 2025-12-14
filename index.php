@@ -9,7 +9,7 @@
 
     <!-- Header -->
     <header class="bg-blue-600 text-white py-6 shadow-md mb-8">
-        <h1 class="text-3xl font-bold text-center">Famille Silva – Lisbonne</h1>
+        <h1 class="text-3xl font-bold text-center">Famille Silva </h1>
     </header>
 
     <main class="max-w-3xl mx-auto px-4">
