@@ -3,7 +3,7 @@ require '../config/mongo.php'; // connexion à la base
 
 // Export des individus
 $individuals = $db->individuals->find()->toArray();
-file_put_contents('individuals.json', json_encode($individuals, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+file_put_contents('individuals.json', json_encode($individuals, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)); // retour à la ligne et garde les caracteres spe
 echo "Fichier individuals.json créé !<br>";
 
 // Export des relations
