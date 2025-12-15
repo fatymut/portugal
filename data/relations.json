@@ -5,8 +5,8 @@
     "personne1": "ind_001",
     "personne2": "ind_002",
     "date_mariage": "1950-06-15",
-    "date_divorce": null,
-    "commentaire": "Mariage traditionnel"
+    "date_divorce": null
+    
   },
   {
     "_id": "rel_002",
@@ -28,8 +28,8 @@
     "personne1": "ind_003",
     "personne2": "ind_004",
     "date_mariage": "1978-05-20",
-    "date_divorce": null,
-    "commentaire": "Mariage civil"
+    "date_divorce": null
+    
   },
   {
     "_id": "rel_005",
@@ -65,8 +65,8 @@
     "personne1": "ind_005",
     "personne2": "ind_010",
     "date_mariage": "2010-09-12",
-    "date_divorce": null,
-    "commentaire": "Mariage récent"
+    "date_divorce": null
+    
   },
   {
     "_id": "rel_010",
@@ -102,8 +102,8 @@
     "personne1": "ind_009",
     "personne2": "ind_006",
     "date_mariage": "2012-07-30",
-    "date_divorce": null,
-    "commentaire": "Remariage"
+    "date_divorce": null
+    
   },
   {
     "_id": "rel_015",
