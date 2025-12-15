@@ -186,8 +186,9 @@ if ($id) {
     <div>
         <label class="text-sm font-medium">Sexe</label>
         <select class="w-full border rounded-lg p-2" name="sexe">
-            <option value="M" <?= ($individu['sexe'] ?? '') === 'M' ? 'selected' : '' ?>>Homme</option>
-            <option value="F" <?= ($individu['sexe'] ?? '') === 'F' ? 'selected' : '' ?>>Femme</option>
+<option value="M" <?php if (!empty($individu['sexe']) && $individu['sexe'] === 'M') { echo 'selected'; } ?>>Homme</option>
+<option value="F" <?php if (!empty($individu['sexe']) && $individu['sexe'] === 'F') { echo 'selected'; } ?>>Femme</option>
+
         </select>
     </div>
     <div class="flex items-end">
