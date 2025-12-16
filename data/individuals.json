@@ -67,7 +67,7 @@
   },
   {
     "_id": "ind_007",
-    "nom": "Silva",
+    "nom": "Silva-Coast",
     "prenom": "Lucas",
     "sexe": "M",
     "date_naissance": "2005-05-15",
@@ -78,7 +78,7 @@
   },
   {
     "_id": "ind_008",
-    "nom": "Silva",
+    "nom": "Silva-Coast",
     "prenom": "Sofia",
     "sexe": "F",
     "date_naissance": "2008-08-20",
@@ -111,7 +111,7 @@
   },
   {
     "_id": "ind_011",
-    "nom": "Coast-Silva",
+    "nom": "Silva",
     "prenom": "Mateus",
     "sexe": "M",
     "date_naissance": "2010-04-01",

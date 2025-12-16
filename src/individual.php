@@ -93,20 +93,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_relation'])) {
 
     if ($type === 'parent_enfant') {
         $role = $_POST['role_parent_enfant'];
+        $commentaire = $_POST['commentaire'];
 
         if ($role === 'parent') {
             $relation = [
                 '_id' => 'rel_' . uniqid(),
                 'type' => 'parent_enfant',
                 'parent' => $id,
-                'enfant' => $autre_id
+                'enfant' => $autre_id,
+                'commentaire' => $commentaire
             ];
         } else {
             $relation = [
                 '_id' => 'rel_' . uniqid(),
                 'type' => 'parent_enfant',
                 'parent' => $autre_id,
-                'enfant' => $id
+                'enfant' => $id,
+                'commentaire' => $commentaire
             ];
         }
     }
@@ -119,7 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_relation'])) {
             'personne2' => $autre_id,
             'statut' => 'marie',
             'date_mariage' => $_POST['date_mariage'] ?: null,
-            'date_divorce' => null
+            'date_divorce' => null,
+            'commentaire' => $_POST['commentaire' ]?? null
         ];
     }
 
@@ -208,6 +212,7 @@ if ($id) {
     $autreId = null;
     $role = '';
     $statut = $r['statut'] ?? 'marie';
+    $commentaire = $r['commentaire'] ?? '';
 
     if ($r['type'] === 'parent_enfant') {
         if ($r['parent'] === $id) {
@@ -227,6 +232,7 @@ if ($id) {
 ?>
 <li class="flex justify-between items-center border rounded-lg p-3">
     <span><strong><?= $role ?></strong> : <?= $nomAutre ?></span>
+    <span><?= htmlspecialchars($commentaire) ?></span>
     <div class="flex gap-2">
         <?php if ($r['type'] === 'couple' && $statut === 'marie'): ?>
         <form method="post" class="inline">
@@ -266,6 +272,10 @@ if ($id) {
     <div>
         <label class="text-sm font-medium">Date de mariage</label>
         <input class="w-full border rounded-lg p-2" type="date" name="date_mariage">
+    </div>
+        <div>
+        <label class="text-sm font-medium">Commentaire</label>
+        <textarea class="w-full border rounded-lg p-2" name="commentaire"></textarea>
     </div>
 
     <div class="md:col-span-2">

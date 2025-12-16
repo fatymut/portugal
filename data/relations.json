@@ -6,14 +6,14 @@
     "personne2": "ind_002",
     "date_mariage": "1950-06-15",
     "date_divorce": null
-    
   },
   {
     "_id": "rel_002",
     "type": "parent_enfant",
     "parent": "ind_001",
     "enfant": "ind_003",
-    "nature": "biologique"
+    "nature": "biologique",
+    "commentaire": "Premier enfant du couple"
   },
   {
     "_id": "rel_003",
@@ -29,7 +29,6 @@
     "personne2": "ind_004",
     "date_mariage": "1978-05-20",
     "date_divorce": null
-    
   },
   {
     "_id": "rel_005",
@@ -66,7 +65,6 @@
     "personne2": "ind_010",
     "date_mariage": "2010-09-12",
     "date_divorce": null
-    
   },
   {
     "_id": "rel_010",
@@ -103,7 +101,6 @@
     "personne2": "ind_006",
     "date_mariage": "2012-07-30",
     "date_divorce": null
-    
   },
   {
     "_id": "rel_015",
