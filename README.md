@@ -18,10 +18,11 @@ Le projet utilise PHP et MongoDB pour la gestion des données, avec Tailwind CSS
 ## 🚀 Installation
 
 ### 1. Cloner le dépôt
+
 ```bash
 git clone https://github.com/fatymut/portugal.git
 cd portugal
-````
+```
 
 ### 2. Installer les dépendances
 
@@ -41,10 +42,11 @@ docker rm <container_id>
 
 ## 📁 Structure du projet
 
-* `/config` : fichiers de configuration
-* `/src` : code source PHP
-* `/public` : fichiers accessibles depuis le navigateur
-* `/vendor` : dépendances Composer
+- `/config` : fichiers de configuration
+- `/src` : code source PHP
+- `/scripts` : fichiers pour import export de données
+- `/data` :fichier de données MongoDB
+- `/vendor` : dépendances Composer
 
 ---
 
@@ -63,10 +65,7 @@ php -S localhost:8000 -t public
 
 ## 📝 Fonctionnalités
 
-* Ajouter, modifier et supprimer des individus
-* Visualiser l’arbre généalogique
-* Gestion des relations familiales
-* Interface responsive avec Tailwind CSS
-
-
-
+- Ajouter, modifier et supprimer des individus
+- Visualiser l’arbre généalogique
+- Gestion des relations familiales
+- Interface responsive avec Tailwind CSS
