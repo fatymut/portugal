@@ -149,7 +149,7 @@ if ($id) {
 
 <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
 
-<h1 class="text-3xl font-bold mb-2"><?= $individu['prenom'] ?? 'Nouvel individu' ?> <?= $individu['nom'] ?? '' ?></h1>
+<h1 class="text-3xl font-bold mb-2"><?= $individu['prenom']?> <?= $individu['nom'] ?></h1>
 
 <?php if (!empty($individu['date_deces'])): ?>
 <p class="text-red-600 font-semibold mb-4">Décédé le <?= $individu['date_deces'] ?></p>
@@ -160,19 +160,19 @@ if ($id) {
     <input type="hidden" name="save_individu" value="1">
     <div>
         <label class="text-sm font-medium">Prénom</label>
-        <input class="w-full border rounded-lg p-2" type="text" name="prenom" value="<?= $individu['prenom'] ?? '' ?>" required>
+        <input class="w-full border rounded-lg p-2" type="text" name="prenom" value="<?= $individu['prenom'] ?>" required>
     </div>
     <div>
         <label class="text-sm font-medium">Nom</label>
-        <input class="w-full border rounded-lg p-2" type="text" name="nom" value="<?= $individu['nom'] ?? '' ?>" required>
+        <input class="w-full border rounded-lg p-2" type="text" name="nom" value="<?= $individu['nom'] ?>" required>
     </div>
     <div>
         <label class="text-sm font-medium">Date de naissance</label>
-        <input class="w-full border rounded-lg p-2" type="date" name="date_naissance" value="<?= $individu['date_naissance'] ?? '' ?>" required>
+        <input class="w-full border rounded-lg p-2" type="date" name="date_naissance" value="<?= $individu['date_naissance'] ?>" required>
     </div>
     <div>
         <label class="text-sm font-medium">Date de décès</label>
-        <input class="w-full border rounded-lg p-2" type="date" name="date_deces" value="<?= $individu['date_deces'] ?? '' ?>">
+        <input class="w-full border rounded-lg p-2" type="date" name="date_deces" value="<?= $individu['date_deces']  ?>">
     </div>
     <div>
         <label class="text-sm font-medium">Sexe</label>
@@ -242,7 +242,7 @@ if ($id) {
 // récupération des infos de l'autre individu
     $autre = $db->individuals->findOne(['_id' => $autreId]);
 
-    $nomAutre = 'Inconnu';
+    $nomAutre = '';
     if ($autre) {
         $nomAutre = $autre['prenom'] . ' ' . $autre['nom'];
     }
