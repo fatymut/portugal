@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../config/mongo.php';
+require '/../config/mongo.php';
 
 $individuals = json_decode(file_get_contents(__DIR__.'/../data/individuals.json'), true);
 $relations = json_decode(file_get_contents(__DIR__.'/../data/relations.json'), true);
