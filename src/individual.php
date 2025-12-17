@@ -1,9 +1,8 @@
 <?php
 require '../config/mongo.php';
 
-/* =========================
-   RÉCUPÉRATION DE L’INDIVIDU
-   ========================= */
+
+// recuperation de l'id de l'individu
 $id = $_GET['id'] ?? null;
 $individu = null;
 
@@ -11,9 +10,7 @@ if ($id) {
     $individu = $db->individuals->findOne(['_id' => $id]);
 }
 
-/* =========================
-   SUPPRESSION D’UNE RELATION
-   ========================= */
+// suppression d'une relation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_relation'])) {
     $relationId = $_POST['relation_id'];
     $db->relations->deleteOne(['_id' => $relationId]);
@@ -21,9 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_relation'])) {
     exit;
 }
 
-/* =========================
-   GESTION DU DIVORCE
-   ========================= */
+// gestion du divorce
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['divorce'])) {
     $relationId = $_POST['relation_id'];
     $db->relations->updateOne(
@@ -39,9 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['divorce'])) {
     exit;
 }
 
-/* =========================
-   SUPPRESSION D’UN INDIVIDU
-   ========================= */
+// suppression de l'individu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_individu'])) {
     if ($id) {
         // Supprimer toutes les relations liées
@@ -60,9 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_individu'])) {
     exit;
 }
 
-/* =========================
-   AJOUT / MODIFICATION PERSONNE
-   ========================= */
+//ajout ou modification d'un individu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_individu'])) {
     $data = [
         'prenom' => $_POST['prenom'],
@@ -84,9 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_individu'])) {
     exit;
 }
 
-/* =========================
-   AJOUT D’UNE RELATION
-   ========================= */
+// ajout d'une relation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_relation'])) {
     $type = $_POST['type'];
     $autre_id = $_POST['autre_id'];
@@ -132,9 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_relation'])) {
     exit;
 }
 
-/* =========================
-   RÉCUPÉRATION DES RELATIONS
-   ========================= */
+// récupération des relations de l'individu
 $relations = [];
 if ($id) {
     $relations = $db->relations->find([
@@ -224,9 +211,7 @@ if ($id) {
         $commentaire = $r['commentaire'];
     }
 
-    /* =========================
-       RELATION PARENT / ENFANT
-       ========================= */
+//relations parent-enfant
     if ($r['type'] === 'parent_enfant') {
 
         if ($r['parent'] === $id) {
@@ -238,9 +223,7 @@ if ($id) {
         }
     }
 
-    /* =========================
-       RELATION COUPLE
-       ========================= */
+//relations couple
     if ($r['type'] === 'couple') {
 
         if ($r['personne1'] === $id) {
@@ -256,9 +239,7 @@ if ($id) {
         }
     }
 
-    /* =========================
-       RÉCUPÉRATION DE L’AUTRE PERSONNE
-       ========================= */
+// récupération des infos de l'autre individu
     $autre = $db->individuals->findOne(['_id' => $autreId]);
 
     $nomAutre = 'Inconnu';
@@ -363,7 +344,7 @@ function toggleParentChild() {
     const type = document.getElementById('relation_type').value;
     document.getElementById('parent_child_choice').style.display = (type === 'parent_enfant') ? 'block' : 'none';
 }
-toggleParentChild();
+toggleParentChild(); // affichage div en fonction de la relation
 </script>
 
 </body>

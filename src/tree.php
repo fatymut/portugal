@@ -1,22 +1,18 @@
 <?php
 require '../config/mongo.php';
 
-/* =========================
-   RÉCUPÉRATION DES DONNÉES
-   ========================= */
+// recup des données
 
 $individuals = iterator_to_array($db->individuals->find());
 $relations   = iterator_to_array($db->relations->find());
 
-/* Index des personnes */
+// index personnes
 $people = [];
 foreach ($individuals as $p) {
     $people[$p['_id']] = $p;
 }
 
-/* =========================
-   COUPLES (PLUSIEURS POSSIBLES)
-   ========================= */
+// couples
 $couples = [];
 foreach ($relations as $r) {
     if ($r['type'] === 'couple') {
@@ -34,9 +30,7 @@ foreach ($relations as $r) {
     }
 }
 
-/* =========================
-   PARENT -> ENFANTS
-   ========================= */
+// parent-enfant
 $tree = [];
 $hasParent = [];
 foreach ($relations as $r) {
@@ -46,9 +40,7 @@ foreach ($relations as $r) {
     }
 }
 
-/* =========================
-   RACINES
-   ========================= */
+// racines (personnes sans parent)
 $roots = [];
 foreach ($people as $id => $p) {
     if (!isset($hasParent[$id])) {
@@ -56,9 +48,7 @@ foreach ($people as $id => $p) {
     }
 }
 
-/* =========================
-   AFFICHAGE RÉCURSIF
-   ========================= */
+//affichage récursif de l'arbre
 function renderNode($id, $people, $tree, $couples, &$rendered) {
     if (isset($rendered[$id])) return;
     $rendered[$id] = true;
@@ -68,9 +58,7 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 
     echo "<div class='flex flex-col items-center'>";
 
-    /* =========================
-       AFFICHAGE DES COUPLES
-       ========================= */
+ // afficher les couples
     foreach ($relationsCouple as $relation) {
 
         $spouseId = $relation['spouse'];
@@ -123,9 +111,7 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
         echo "<p class='text-sm text-gray-600 mb-2'>$label $icon</p>";
     }
 
-    /* =========================
-       PERSONNE SEULE
-       ========================= */
+// afficher les personnes seules
     if (empty($relationsCouple)) {
         echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] mb-4'>";
         echo "<p class='font-bold text-lg'>";
@@ -154,9 +140,7 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
         echo "</div>";
     }
 
-    /* =========================
-       ENFANTS (TOUS LES COUPLES ET PERSONNES SEULES)
-       ========================= */
+// afficher les enfants
     $children = $tree[$id] ?? []; // enfants directs du parent
 
     foreach ($relationsCouple as $relation) {
@@ -171,7 +155,7 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
     if (!empty($children)) {
         echo "<div class='w-px h-8 bg-gray-400 my-2'></div>";
         echo "<div class='flex gap-10 bg-blue-50 p-4 rounded-lg'>";
-        foreach ($children as $child) {
+        foreach ($children as $child) { // afficher chaque enfant
             renderNode($child, $people, $tree, $couples, $rendered);
         }
         echo "</div>";

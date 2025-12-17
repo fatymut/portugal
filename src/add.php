@@ -2,9 +2,7 @@
 require '../config/mongo.php';
 
 
-/* =========================
-   TRAITEMENT DU FORMULAIRE
-   ========================= */
+//traitement form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $data = [
