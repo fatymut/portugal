@@ -1,6 +1,6 @@
 <?php
 require '../config/mongo.php';
-require __DIR__ . '/../vendor/autoload.php';
+require  '/../vendor/autoload.php';
 
 $q = $_GET['q'] ?? '';
 
