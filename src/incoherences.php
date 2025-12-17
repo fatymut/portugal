@@ -1,6 +1,14 @@
 <?php
 require '../config/mongo.php';
 
+?> 
+
+<div class="mt-6">
+    <a href="../index.php" class="text-blue-600 hover:underline">← Retour à l’accueil</a>
+</div> 
+
+<?php
+
 $relations = $db->relations->find(['type' => 'parent_enfant']);
 
 foreach ($relations as $rel) {

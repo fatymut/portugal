@@ -1,5 +1,12 @@
 <?php
 require '../config/mongo.php';
+?> 
+
+<div class="mt-6">
+    <a href="../index.php" class="text-blue-600 hover:underline">← Retour à l’accueil</a>
+</div> 
+
+<?php
 
 echo "Nombre d'individus : " . $db->individuals->countDocuments() . "<br>";
 echo "Sans date de naissance : " .

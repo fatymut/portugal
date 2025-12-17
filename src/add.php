@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div>
         <label class="block text-sm font-medium">Date de naissance</label>
-        <input class="w-full border rounded-lg p-2" type="date" name="date_naissance" required>
+        <input class="w-full border rounded-lg p-2" type="date" name="date_naissance" >
     </div>
 
     <div>
@@ -64,15 +64,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div>
         <label class="block text-sm font-medium">Profession</label>
-        <input class="w-full border rounded-lg p-2" type="text" name="profession">
+        <input class="w-full border rounded-lg p-2" type="text" name="profession" required>
     </div>
             <div>
         <label class="block text-sm font-medium">Lieu de naissance</label>
-        <input class="w-full border rounded-lg p-2" type="text" name="lieu_naissance">
+        <input class="w-full border rounded-lg p-2" type="text" name="lieu_naissance" required>
     </div>
                 <div>
         <label class="block text-sm font-medium">Nationalité</label>
-        <input class="w-full border rounded-lg p-2" type="text" name="nationalite">
+        <input class="w-full border rounded-lg p-2" type="text" name="nationalite" required>
     </div>
 
     <div>
