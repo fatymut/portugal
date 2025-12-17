@@ -69,3 +69,13 @@ php -S localhost:8000 -t public
 - Visualiser l’arbre généalogique
 - Gestion des relations familiales
 - Interface responsive avec Tailwind CSS
+
+## 📝 Commande import export
+
+
+```bash
+php scripts/export.php
+```
+```bash
+php scripts/import.php
+```
