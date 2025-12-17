@@ -14,20 +14,21 @@ foreach ($individuals as $p) {
     $people[$p['_id']] = $p;
 }
 
-/* Couples (mariés ou divorcés) */
+/* =========================
+   COUPLES (PLUSIEURS POSSIBLES)
+   ========================= */
+
 $couples = [];
 foreach ($relations as $r) {
     if ($r['type'] === 'couple') {
-        $statut = 'marie';
-        if (isset($r['statut'])) {
-            $statut = $r['statut'];
-        }
+        $statut = $r['statut'] ?? 'marie';
 
-        $couples[$r['personne1']] = [
+        $couples[$r['personne1']][] = [
             'spouse' => $r['personne2'],
             'statut' => $statut
         ];
-        $couples[$r['personne2']] = [
+
+        $couples[$r['personne2']][] = [
             'spouse' => $r['personne1'],
             'statut' => $statut
         ];
@@ -55,6 +56,7 @@ foreach ($people as $id => $p) {
 /* =========================
    AFFICHAGE RÉCURSIF
    ========================= */
+
 function renderNode($id, $people, $tree, $couples, &$rendered) {
     if (isset($rendered[$id])) {
         return;
@@ -62,41 +64,44 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
     $rendered[$id] = true;
 
     $p = $people[$id];
-    $spouse = null;
-    $statut = null;
-
-    if (isset($couples[$id])) {
-        $spouse = $couples[$id]['spouse'];
-        $statut = $couples[$id]['statut'];
-    }
+    $relationsCouple = $couples[$id] ?? [];
 
     echo "<div class='flex flex-col items-center'>";
 
-    // AFFICHAGE COUPLE
-    if ($spouse !== null && !isset($rendered[$spouse])) {
-        $rendered[$spouse] = true;
-        $s = $people[$spouse];
+    /* =========================
+       AFFICHAGE DES COUPLES
+       ========================= */
+    foreach ($relationsCouple as $relation) {
+
+        $spouseId = $relation['spouse'];
+        $statut   = $relation['statut'];
+
+        if (isset($rendered[$spouseId])) {
+            continue;
+        }
+
+        $rendered[$spouseId] = true;
+        $s = $people[$spouseId];
 
         $style = "bg-gray-100 border-gray-400";
-        $icon = "💔";
+        $icon  = "💔";
         $label = "Divorcés";
+
         if ($statut === 'marie') {
             $style = "bg-yellow-50 border-yellow-400";
-            $icon = "💍";
+            $icon  = "💍";
             $label = "Mariés";
         }
 
         echo "<div class='flex gap-6 items-center mb-4'>";
-        
+
         foreach ([$p, $s] as $person) {
             echo "<div class='$style border-2 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px]'>";
-            
-            // Nom/prénom cliquable
+
             echo "<p class='font-bold text-lg'>";
             echo "<a href='individual.php?id=" . $person['_id'] . "' class='text-blue-600 hover:underline'>";
             echo $person['prenom'] . " " . $person['nom'];
-            echo "</a>";
-            echo "</p>";
+            echo "</a></p>";
 
             echo "<p class='text-sm text-gray-600'>Date naissance: " . $person['date_naissance'] . "</p>";
 
@@ -119,19 +124,21 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 
             echo "</div>";
         }
+
         echo "</div>";
         echo "<p class='text-sm text-gray-600 mb-2'>$label $icon</p>";
     }
 
-    // PERSONNE SEULE
-    if ($spouse === null) {
+    /* =========================
+       PERSONNE SEULE
+       ========================= */
+    if (empty($relationsCouple)) {
         echo "<div class='bg-white border-2 border-gray-300 rounded-xl px-6 py-3 shadow-md text-center min-w-[180px] mb-4'>";
-        
+
         echo "<p class='font-bold text-lg'>";
         echo "<a href='individual.php?id=" . $p['_id'] . "' class='text-blue-600 hover:underline'>";
         echo $p['prenom'] . " " . $p['nom'];
-        echo "</a>";
-        echo "</p>";
+        echo "</a></p>";
 
         echo "<p class='text-sm text-gray-600'>Date naissance: " . $p['date_naissance'] . "</p>";
 
@@ -155,24 +162,25 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
         echo "</div>";
     }
 
-    // ENFANTS
+    /* =========================
+       ENFANTS (TOUS LES COUPLES)
+       ========================= */
+
     $children = [];
-    if ($spouse !== null) {
+
+    foreach ($relationsCouple as $relation) {
+        $spouseId = $relation['spouse'];
+
         if (isset($tree[$id])) {
-            foreach ($tree[$id] as $c) {
-                $children[] = $c;
-            }
+            $children = array_merge($children, $tree[$id]);
         }
-        if (isset($tree[$spouse])) {
-            foreach ($tree[$spouse] as $c) {
-                $children[] = $c;
-            }
-        }
-    } else {
-        if (isset($tree[$id])) {
-            $children = $tree[$id];
+
+        if (isset($tree[$spouseId])) {
+            $children = array_merge($children, $tree[$spouseId]);
         }
     }
+
+    $children = array_unique($children);
 
     if (!empty($children)) {
         echo "<div class='w-px h-8 bg-gray-400 my-2'></div>";

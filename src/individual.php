@@ -208,48 +208,110 @@ if ($id) {
 
 <h2 class="text-xl font-semibold mb-4">Relations</h2>
 <ul class="space-y-2 mb-8">
-<?php foreach ($relations as $r): 
+<?php foreach ($relations as $r): ?>
+
+<?php
     $autreId = null;
     $role = '';
-    $statut = $r['statut'] ?? 'marie';
-    $commentaire = $r['commentaire'] ?? '';
+    $statut = 'marie';
 
+    if (isset($r['statut'])) {
+        $statut = $r['statut'];
+    }
+
+    $commentaire = '';
+    if (isset($r['commentaire'])) {
+        $commentaire = $r['commentaire'];
+    }
+
+    /* =========================
+       RELATION PARENT / ENFANT
+       ========================= */
     if ($r['type'] === 'parent_enfant') {
+
         if ($r['parent'] === $id) {
             $autreId = $r['enfant'];
-            $role = 'enfant';
+            $role = 'Enfant';
         } else {
             $autreId = $r['parent'];
-            $role = 'parent';
+            $role = 'Parent';
         }
     }
+
+    /* =========================
+       RELATION COUPLE
+       ========================= */
     if ($r['type'] === 'couple') {
-        $autreId = ($r['personne1'] === $id) ? $r['personne2'] : $r['personne1'];
-        $role = ($statut === 'divorce') ? 'ex-conjoint' : 'conjoint';
+
+        if ($r['personne1'] === $id) {
+            $autreId = $r['personne2'];
+        } else {
+            $autreId = $r['personne1'];
+        }
+
+        if ($statut === 'divorce') {
+            $role = 'Divorcé(e) de';
+        } else {
+            $role = 'Marié(e) avec';
+        }
     }
+
+    /* =========================
+       RÉCUPÉRATION DE L’AUTRE PERSONNE
+       ========================= */
     $autre = $db->individuals->findOne(['_id' => $autreId]);
-    $nomAutre = $autre ? $autre['prenom'].' '.$autre['nom'] : 'Inconnu';
+
+    $nomAutre = 'Inconnu';
+    if ($autre) {
+        $nomAutre = $autre['prenom'] . ' ' . $autre['nom'];
+    }
 ?>
+
 <li class="flex justify-between items-center border rounded-lg p-3">
-    <span><strong><?= $role ?></strong> : <?= $nomAutre ?></span>
-    <span><?= htmlspecialchars($commentaire) ?></span>
+    <div>
+        <strong><?= $role ?></strong> <?= $nomAutre ?>
+
+        <?php if (isset($r['date_mariage']) && !empty($r['date_mariage'])): ?>
+            <span class="text-sm text-gray-500">
+                (mariage : <?= $r['date_mariage'] ?>)
+            </span>
+        <?php endif; ?>
+
+        <?php if ($statut === 'divorce' && isset($r['date_divorce']) && !empty($r['date_divorce'])): ?>
+            <span class="text-sm text-red-500">
+                (divorce : <?= $r['date_divorce'] ?>)
+            </span>
+        <?php endif; ?>
+
+        <?php if (!empty($commentaire)): ?>
+            <div class="text-sm text-gray-600"><?= htmlspecialchars($commentaire) ?></div>
+        <?php endif; ?>
+    </div>
+
     <div class="flex gap-2">
         <?php if ($r['type'] === 'couple' && $statut === 'marie'): ?>
-        <form method="post" class="inline">
-            <input type="hidden" name="divorce" value="1">
-            <input type="hidden" name="relation_id" value="<?= $r['_id'] ?>">
-            <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Divorcer</button>
-        </form>
+            <form method="post">
+                <input type="hidden" name="divorce" value="1">
+                <input type="hidden" name="relation_id" value="<?= $r['_id'] ?>">
+                <button class="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">
+                    Divorcer
+                </button>
+            </form>
         <?php endif; ?>
-        <form method="post" class="inline">
+
+        <form method="post">
             <input type="hidden" name="delete_relation" value="1">
             <input type="hidden" name="relation_id" value="<?= $r['_id'] ?>">
-            <button class="bg-gray-400 text-white px-4 py-1 rounded hover:bg-gray-500">Supprimer</button>
+            <button class="bg-gray-400 text-white px-4 py-1 rounded hover:bg-gray-500">
+                Supprimer
+            </button>
         </form>
     </div>
 </li>
+
 <?php endforeach; ?>
 </ul>
+
 
 <h3 class="text-lg font-semibold mb-3">Ajouter une relation</h3>
 <form method="post" class="grid grid-cols-1 md:grid-cols-2 gap-4">
