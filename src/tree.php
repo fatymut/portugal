@@ -95,7 +95,7 @@ function renderNode($id, $people, $tree, $couples, &$rendered) {
 
             if (!empty($person['profession'])) {
                 $professions = (array)$person['profession'];
-                echo "<p class='text-sm text-gray-700'>Profession: " . implode(', ', $professions) . "</p>";
+                echo "<p class='text-sm text-gray-700'>Profession: " .  $professions . "</p>";
             }
 
             if (!empty($person['lieu_naissance'])) {
