@@ -14,3 +14,25 @@ $couplesDivorces = $db->relations->countDocuments([
     'date_divorce' => ['$ne' => null]
 ]);
 echo "Couple Divorcés : " . $couplesDivorces . "<br>";
+
+echo "Nombre Homme : " .
+     $db->individuals->countDocuments(['sexe' => 'M']) . "<br>";
+
+     echo "Nombre Femme : " .
+     $db->individuals->countDocuments(['sexe' => 'F']) . "<br>";
+
+     $villes = $db->individuals->aggregate([
+    [
+        '$group' => [
+            '_id' => '$lieu_naissance',   // clé de regroupement : la ville
+            'total' => ['$sum' => 1]     // compter le nombre
+        ]
+    ]
+]);
+
+echo "Par ville :<br>";
+foreach ($villes as $ville) {
+    echo $ville['_id'] . " : " . $ville['total'] . "<br>";
+}
+
+     
