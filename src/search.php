@@ -6,8 +6,8 @@ $q = $_GET['q'] ?? '';
 
 $resultats = $db->individuals->find([
     '$or' => [
-        ['nom' => new MongoDB\BSON\Regex($q, 'i')],
-        ['prenom' => new MongoDB\BSON\Regex($q, 'i')]
+        ['nom' => ['$regex' => $q, '$options' => 'i']],
+        ['prenom' => ['$regex' => $q, '$options' => 'i']]
     ]
 ]);
 ?>
